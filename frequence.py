@@ -4,8 +4,8 @@ def frequence(fichier):
 	#si le fichier existe on l'ouvre et on continue sinon c'est fini
 	try:
 		text_file = open(fichier, 'r')
-	
-		alphabet = {}
+
+		alphabet = {'A':0}
 		cpt = 0
 
 		for line in text_file:
@@ -23,8 +23,6 @@ def frequence(fichier):
 
 		text_file.close()
 		return alphabet
-	
+
 	except IOError:
 		print 'entrez un nom de fichier valide'
-
-	
