@@ -1,0 +1,3 @@
+#! /bin/bash
+
+iconv -f utf-8 -t ascii//TRANSLIT $1 | tr 'a-z' 'A-Z' | tr -d -c 'A-Z' > $2
