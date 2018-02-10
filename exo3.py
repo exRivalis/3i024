@@ -78,23 +78,36 @@ def dechiff_monoalphabetique(text_chiffre,cle):
 def chiff_vigenere(text,cle):
 
     text_chiffre=''
+    cpt = 0
 
-    for t in  text:
+    for c in text:
+        cc = chiff_cesar(c, cle[cpt%len(cle)])
+        text_chiffre += cc
+
+    return text_chiffre
+
+    """for t in  text:
         t_chiff=chiff_cesar(t,ord(cle[t])-ord(t))
         text_chiffre+=t_chiff
 
-    return text_chiffre
+    return text_chiffre"""
 
 
 def dechiff_vigenere(text_chiffre,cle):
 
     text=''
+    cpt = 0
 
-    for t_chiff in text_chiffre:
+    for c in text_chiffre:
+        cd = cesar_attaque(c, cle[cpt%len(cle)])
+        text += cd
+
+    return text
+    """for t_chiff in text_chiffre:
         t=cesar_attaque(t_chiff,ord(cle[t_chiff])-ord(t_chiff))
         text+=t
 
-    return text
+    return text"""
 
 #affichage menu avec choix de la methode a utiliser
 def main():
@@ -152,8 +165,14 @@ def main():
 
         print ("Entrez texte a chiffrer : ")
         text_a_chiffre=raw_input()
-        print ("Veuillez entrer une cle (liste de k entiers): ")
-        cle = raw_input()
+        print ("Veuillez entrer la longueur k de la cle: ")
+        k = int(raw_input())
+        #recup des k deplacements
+        cle = []
+        for i in range(k):
+            print "k%s : " %i
+            cle.append(int(raw_input()))
+
         text_chiffre = chiff_vigenere(text_a_chiffre, cle)
         print ("Texte chifre",text_chiffre)
 
@@ -162,9 +181,15 @@ def main():
 
         print ("Entrez texte a dechiffrer : ")
         text_chiffre=raw_input()
-        print ("Veuillez entrer une cle (liste de k entiers): ")
-        cle = raw_input()
-        text_dechiffre = dechiff_vigenere(text_a_chiffre, cle)
+        print ("Veuillez entrer la longueur k de la cle: ")
+        k = int(raw_input())
+        #recup des k deplacements
+        cle = []
+        for i in range(k):
+            print "k%s : " %i
+            cle.append(int(raw_input()))
+
+        text_dechiffre = dechiff_vigenere(text_chiffre, cle)
         print ("Texte dechiffree ",text_dechiffre)
 
 
