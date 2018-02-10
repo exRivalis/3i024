@@ -6,10 +6,10 @@ def mult_mod(n):
 	tmplist = [];
 	for i in range(0, n):
 		for j in range(0, n):
-			tmplist.append(i*j%n);	
+			tmplist.append(i*j%n);
 		liste.append(tmplist);
 		tmplist = [];
-			
+
 	return liste;
 
 l = mult_mod(6);
@@ -17,7 +17,7 @@ l = mult_mod(6);
 def display(liste):
 	for l in liste:
 		print l;
-			
+
 #2: calcul inverse de m modulo n
 def inverse(m, n, l):
 	m = m%n;
@@ -32,7 +32,7 @@ def diviseurs(n):
 	l= [];
 	for i in range(1, n+1):
 		if n % i == 0:
-			l.append(i); 
+			l.append(i);
 	return l;
 
 
@@ -45,7 +45,7 @@ def pgcd(m, n):
 			if i == j:
 				return i;
 	return 1;
-	
+
 #display(diviseurs(28));
 print pgcd(50, 24)
 #print inverse(5, 6, l);

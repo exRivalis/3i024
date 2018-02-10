@@ -1,6 +1,7 @@
 #param par ligne de commande
 import sys
-
+import numpy as np
+import matplotlib.pyplot as plt
 #frequence d'apparition caractere dans un fichier
 def frequence(file_name):
 	text_file = None
@@ -42,7 +43,9 @@ def traitement(read_path, write_path):
 		result.write(key)
 		result.write(" %f\n" %(value))
 	result.close()
+	return f
 
+#this function opens a file, writes the frequencies in another one and draws a histogram
 def main(args):
 	#get path from command line
 	if len(args) != 3:
@@ -53,7 +56,25 @@ def main(args):
 		#fichier contenant me text a analyser
 		read_path = args[1]
 
-		traitement(read_path, write_path)
-		return 
+		dict = traitement(read_path, write_path)
+
+		#histogramme avec numpy
+		draw_hist(dict)
+		return
+
+def draw_hist(dict):
+	x = []
+	y = []
+
+	for key, value in dict.items():
+		x.append(key)
+		y.append(value*100)
+
+	#np.histogram(y)
+	#a = np.hstack((x, y))
+	
+	plt.hist(x, weights = y)
+	plt.show()
+
 #execution main
 main(sys.argv)
