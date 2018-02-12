@@ -12,15 +12,53 @@ def p(x, n):
     return res
 
 #calcul indice de coincidence
-def IC(freq, tot):
-    #freq[i] contient nbre apparition de la i eme lettre
+def IC(text):
+    freq = [0 for x in range(26)] #contient nbre apparition de la i eme lettre
+    size = len(text) #nombre de lettres dans le text
+    #print size
+	#calcul nombre d'apparition
+    for ch in text:
+        if ord(ch) < 97:
+            #miniscule
+            n = ord(ch) - 65
+        else:
+            #majuscule
+            n = ord(ch) - 97
+        freq[n] += 1
 
     ic = 0 #indice de coincidence
-
+    #print freq
     for i in freq:
-        ic += p(i, tot)
+    	#print size
+    	ic += p(i, size)
+    return ic
 
-        return ic
+
+#longueur de la cle d'un chiffrement de vigenere
+#reperer les motifs qui se repete dans le texte
+#mesurer la distance entre deux memes motifs
+#calculer le pgcd entre les longueurs trouvees -> Kasiski
+
+#autrement calculer IC des sous-chaines de longueur k allant de 3 a 24
+#reperer les IC qui sortent de l'ordinaire et calculer le pgcd de leur longueurs
+def longueur_cle_vigenere(fichier):
+	f = open(fichier, 'r')
+	text  = ''
+	dico = {}#repertorie les ic selon la longuer de k de la sous-chaine
+	#stock le texte dans une chaine de caractere
+	for line in f:
+		text += line
+		
+	for k in range(3, 25):
+		#pour chauqe val de k on calcul l'IC
+		ic = 0
+		cpt = 0
+		for i in range(0, len(text), k):
+			t = text[i:i+k]
+			ic += IC(t)
+			cpt += 1
+		dico[k] = float(ic)/cpt
+	return dico	
 
 def main(args):
     if len(args) != 2:
@@ -29,23 +67,17 @@ def main(args):
         cpt = 0 #nombre total de lettres
         freq = [0]*26 # nombre d'apparition de chaque lettre
         text_file = open(args[1], 'r')
-
-        #calcul nombre d'apparition
+        text = ''
+        #l'ecrire dans une chaine de caractere
         for line in text_file:
-            for ch in line:
-                cpt+=1
-                if ord(ch) < 97:
-                    #miniscule
-                    n = ord(ch) - 65
-                else:
-                    #majuscule
-                    n = ord(ch) - 97
-                freq[n] += 1
+			text += line
+			
+        ic = IC(text)
+    	text_file.close()
 
-    text_file.close()
+    	#calcul et renvoie ic
+    	#print freq
+    	return ic
 
-    #calcul et renvoie ic
-    print freq
-    return IC(freq, cpt)
-
-print main(sys.argv)
+#print main(sys.argv)
+print longueur_cle_vigenere(sys.argv[1])

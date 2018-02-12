@@ -15,7 +15,7 @@ from frequence import *
 from operator import itemgetter
 
 if len(sys.argv) != 3:
-	print "python exo4.py texte_chiffrer texte_de_reference"
+	print "python exo4.py texte_chiffrer freq_texte_de_reference"
 else:
 	file_path_chif = sys.argv[1]
 	file_path_freq = sys.argv[2]
