@@ -55,9 +55,11 @@ def longueur_cle_vigenere(fichier):
 		cpt = 0
 		for i in range(0, len(text), k):
 			t = text[i:i+k]
-			ic += IC(t)
-			cpt += 1
+			if len(t) > 1:
+				ic += IC(t)
+				cpt += 1
 		dico[k] = float(ic)/cpt
+		#pull les 3 max
 	return dico	
 
 def main(args):
