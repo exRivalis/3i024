@@ -73,16 +73,25 @@ def dechiff_monoalphabetique(text_chiffre,cle):
 
 
 #Q3
+#rend rang de la lettre qu'elle soit ecrite en majuscule ou non
+def rang(c):
+	if ord(c)<97:
+		#miniscule
+		return ord(c) - 65
+	#majuscule
+	return ord(c) - 97
 
-
+#Vigenere
 def chiff_vigenere(text,cle):
 
     text_chiffre=''
     cpt = 0
-
+    print cle
     for c in text:
-        cc = chiff_cesar(c, cle[cpt%len(cle)])
+    	#print cle[cpt%len(cle)], rang(cle[cpt%len(cle)])
+        cc = chiff_cesar(c, rang(cle[cpt%len(cle)]))
         text_chiffre += cc
+        cpt+=1
 
     return text_chiffre
 
@@ -99,8 +108,9 @@ def dechiff_vigenere(text_chiffre,cle):
     cpt = 0
 
     for c in text_chiffre:
-        cd = cesar_attaque(c, cle[cpt%len(cle)])
+        cd = cesar_attaque(c, rang(cle[cpt%len(cle)]))
         text += cd
+        cpt+=1
 
     return text
     """for t_chiff in text_chiffre:
@@ -165,13 +175,10 @@ def main():
 
         print ("Entrez texte a chiffrer : ")
         text_a_chiffre=raw_input()
-        print ("Veuillez entrer la longueur k de la cle: ")
-        k = int(raw_input())
-        #recup des k deplacements
-        cle = []
-        for i in range(k):
-            print "k%s : " %i
-            cle.append(int(raw_input()))
+        print ("Veuillez entrer la cle: ")
+      
+      	#recup cle
+        cle = raw_input();
 
         text_chiffre = chiff_vigenere(text_a_chiffre, cle)
         print ("Texte chifre",text_chiffre)
@@ -181,14 +188,10 @@ def main():
 
         print ("Entrez texte a dechiffrer : ")
         text_chiffre=raw_input()
-        print ("Veuillez entrer la longueur k de la cle: ")
-        k = int(raw_input())
-        #recup des k deplacements
-        cle = []
-        for i in range(k):
-            print "k%s : " %i
-            cle.append(int(raw_input()))
-
+        print ("Veuillez entrer la cle: ")
+        #recup cle
+        cle = raw_input()
+        
         text_dechiffre = dechiff_vigenere(text_chiffre, cle)
         print ("Texte dechiffree ",text_dechiffre)
 
