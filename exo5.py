@@ -48,30 +48,28 @@ def pgcd(a, b):
 #autrement calculer IC des sous-chaines de longueur k allant de 3 a 24
 #reperer les IC qui sortent de l'ordinaire et calculer le pgcd de leur longueurs
 def longueur_cle_vigenere(fichier):
-	f = open(fichier, 'r')
-	text  = ''
-	list_ic = []#repertorie les ic selon la longuer de k de la sous-chaine
-	#stock le texte dans une chaine de caractere
-	for line in f:
-		text += line
+    f = open(fichier, 'r')
+    text  = ''
+    list_ic = []#repertorie les ic selon la longuer de k de la sous-chaine
+    #stock le texte dans une chaine de caractere
+    for line in f:
+        text += line
     #calcul ic
-	for k in range(3, 25):
-		#pour chauqe val de k on calcul l'IC
-		ic = 0
-		cpt = 0
-		for i in range(0, len(text), k):
-            #t contient une chaine de caractere de taille k
-			t = text[i:i+k]
-			if len(t) > 1:
-				ic += IC(t)
-				cpt += 1
-		list_ic.append((k, float(ic)/cpt))
-        #couples longueur de sous-chaine k et l'indice de coincidence correspondant
+    for k in range(3, 30):
+        #pour chauqe val de k on calcul l'IC
+        ic = 0
+        cpt = 0
+        tmp_str = ''
+        for i in range(0, len(text), k):
+            #on recup la i eme lettre, par pas de k
+            tmp_str = tmp_str + text[i]
+        list_ic.append((k, IC(tmp_str)))
+    #couples longueur de sous-chaine k et l'indice de coincidence correspondant
     list_ic = sorted(list_ic, key=lambda ligne: ligne[1], reverse=True)
     #affichage des (k, ic)
     for l in list_ic:
         print l
-    #recup les longuers des n meilleurs scores
+        #recup les longuers des n meilleurs scores
     n = 0
     print ("\nnombre de valeurs a recuperer: ")
     n = int(raw_input())
@@ -81,10 +79,17 @@ def longueur_cle_vigenere(fichier):
         longueurs_k.append(list_ic[i][0])
 
     pg = longueurs_k[0]
-    for i in range(1, n, 2):
+    for i in range(1, n):
         pg = pgcd(pg, longueurs_k[i])
 
     print ("pgcd = ", pg)
+
+    """
+    maintenant qu'on a la longueur de la cle
+    on fait une cryptanalyse par decalage
+    pour chaque sous-chaine on appel cesar pour trouver la lettre de codage
+    on fait ca pour chaque sous-chaine -> on determine la cle de codage
+    """
 #Q3
 #cryptanalyse par decalage
 
