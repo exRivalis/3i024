@@ -73,7 +73,7 @@ def dechiff_monoalphabetique(text_chiffre,cle):
 
 
 #Q3
-#rend rang de la lettre qu'elle soit ecrite en majuscule ou non
+#rend rang (0 - 25) de la lettre qu'elle soit ecrite en majuscule ou non
 def rang(c):
 	if ord(c)<97:
 		#miniscule
@@ -176,7 +176,7 @@ def main():
         print ("Entrez texte a chiffrer : ")
         text_a_chiffre=raw_input()
         print ("Veuillez entrer la cle: ")
-      
+
       	#recup cle
         cle = raw_input();
 
@@ -191,7 +191,7 @@ def main():
         print ("Veuillez entrer la cle: ")
         #recup cle
         cle = raw_input()
-        
+
         text_dechiffre = dechiff_vigenere(text_chiffre, cle)
         print ("Texte dechiffree ",text_dechiffre)
 

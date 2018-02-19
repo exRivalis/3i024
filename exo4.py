@@ -35,7 +35,7 @@ else:
 
 
 	#remplire dico (lettre, freq) a partir des frequences du texte de reference
-	
+
 	freq_fr = {}
 	for l in ref_file:
 		words = l.split()
@@ -45,7 +45,6 @@ else:
 
 	#trier les deux tableaux par ordre decroissant des frequences
 	#pour ce faire les transformer en liste de tuples, pas de tri sur des dictionnaires
-
 	t_freq_fr = []
 	t_freq_chif = []
 
