@@ -1,0 +1,13 @@
+#! /bin/bash
+
+echo $1
+data=`mktemp`
+./frequence $1 > $data
+gnuplot -persist <<EOF
+set boxwidth 0.9 relative
+set style data histograms
+set style fill solid 1.0 border -1
+set title "$1"
+plot "$data" using 2:xticlabels(1)
+EOF
+rm $data
