@@ -92,7 +92,16 @@ def longueur_cle_vigenere(fichier):
     """
 #Q3
 #cryptanalyse par decalage
+def decalage_vigenere(text_chiffre, n):
+	liste_textes = [n]#contient n textes
+	for i in range(n):
+		for j in range(n):
+			liste_textes[i].append(text_chiffre[i + ])
 
+
+
+
+#main contenant tout les appels aux autres fonctions
 def main(args):
     if len(args) != 2:
         print "python exo5.py text_path"
