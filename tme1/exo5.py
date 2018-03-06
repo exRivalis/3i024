@@ -3,7 +3,7 @@
 #ni : nombre de la i eme lettre de la l'alphabet dans le texte
 #P(ni) = 2 parmis ni / 2 parmis n = ni(ni-1)/ n(n-1) -> proba de tirer deux fois la i eme lettre
 #IC = somme(P()) entre 1 et 26
-
+import math
 import sys
 
 #Q1
@@ -55,7 +55,7 @@ def longueur_cle_vigenere(fichier):
     for line in f:
         text += line
     #calcul ic
-    for k in range(3, 30):
+    for k in range(3, 20):
         #pour chauqe val de k on calcul l'IC
         ic = 0
         cpt = 0
@@ -78,26 +78,93 @@ def longueur_cle_vigenere(fichier):
     for i in range(n):
         longueurs_k.append(list_ic[i][0])
 
-    pg = longueurs_k[0]
-    for i in range(1, n):
-        pg = pgcd(pg, longueurs_k[i])
 
-    print ("pgcd = ", pg)
+    pg = longueurs_k[0]
+    print("\npgcd entre: \n"+str(pg))
+    for i in range(1, n):
+		print longueurs_k[i]
+		pg = pgcd(pg, longueurs_k[i])
+
+    print ("\nresultat = " + str(pg))
 
     """
     maintenant qu'on a la longueur de la cle
     on fait une cryptanalyse par decalage
     pour chaque sous-chaine on appel cesar pour trouver la lettre de codage
-    on fait ca pour chaque sous-chaine -> on determine la cle de codage 
+    on fait ca pour chaque sous-chaine -> on determine la cle de codage
     """
 #Q3
+#dechiffrement cesar prend une lettre chiffree et renvoie la lettre en claire
+def dechiff_cesar(lettre,cle):
+	l =ord(lettre)
+	c =ord(cle)
+	return chr((l - c)%26+65)
 #cryptanalyse par decalage
-def decalage_vigenere(text_chiffre, n):
-	liste_textes = [n]#contient n textes
+#diviser le texte entrant en n textes
+#textes[i] contient les lettres aux indices i + kn tant que kn < len(texte)
+#comtabiliser la frequence des lettres dans chacun des n textes: la plus frequente est souvent E
+#effectuer un decalage
+def decalage_vigenere(texte, n):
+	liste_textes = []#contient n textes
 	for i in range(n):
-		for j in range(n):
-			liste_textes[i].append(text_chiffre[i + ])
+		liste_textes.append([])
+    #recup n textes
+	# for i in range(n):
+	# 	for k in range(len(texte)):
+	# 		if i+k*n < len(texte):
+	# 			liste_textes[i].append(texte[i+k*n])
+	# 		else:
+	# 			continue
+	for i in range(len(texte)):
+		liste_textes[i%n].append(texte[i])
+		# print liste_textes[i%n][-1], texte[i]
+	#comptabiliser les occurences
+	# print liste_textes[5][5:10]
+	# print liste_textes[8][5:10]
+	liste_occurence = [] #continet les uplets correspondants aux sous textes (lettre, occurrence)
+	for i in range(n):
+		lettres_occ = []
+		#suppression doublons
+		t = liste_textes[i]
+		# print liste_textes[i][5:10], i
+		lettres = list(set(t))
+		# print i
+		for j in range(len(lettres)):
+			#compter occurrences
+			cpt_lettre = 0
+			for l in t:
+				if l == lettres[j]:
+					cpt_lettre +=1
+			lettres_occ.append((lettres[j], cpt_lettre)) #contient (lettre, occurrences)
 
+		#lettres est une liste de tuples maintenant
+		liste_occurence.append(lettres_occ)
+
+	#liste_occurence contient la liste (lettres, occ) pour chaque sous texte
+	# print "liste occurrences: ", liste_occurence
+	# determination de la cle de chiffrement
+	cle = []
+	for text_i in liste_occurence:
+		#tri decroissant des occurrences
+		text_i = sorted(text_i, key=lambda data: data[1], reverse=True)
+		#la premiere est surrement E (en francais en tout cas)
+		x = text_i[0][0]
+		if 65 <=ord(x) < 97:
+			cle.append(chr(((ord(x) - ord('E'))%26 + ord('A')))) # %26 pour rester l'alphabet A-Z
+		elif ord(x)>=65: #miniscule
+			cle.append(chr(((ord(x) - ord('e'))%26 + ord('a'))))
+
+
+	#decriptage texte
+	texte_claire = ''
+	key = ''
+	for c in cle:
+		key+=c
+	print "\nLa cle de chiffrement: " + key
+	for i in range(len(texte)):
+		texte_claire += (dechiff_cesar(texte[i], cle[i%n]))
+	#renvoyer le texte claire
+	return texte_claire
 
 
 
@@ -106,20 +173,33 @@ def main(args):
     if len(args) != 2:
         print "python exo5.py text_path"
     else:
-        cpt = 0 #nombre total de lettres
-        freq = [0]*26 # nombre d'apparition de chaque lettre
-        text_file = open(args[1], 'r')
-        text = ''
-        #l'ecrire dans une chaine de caractere
-        for line in text_file:
+        #cpt = 0 #nombre total de lettres
+		#freq = [0]*26 # nombre d'apparition de chaque lettre
+		#ouverture fichier
+		text_file = open(args[1], 'r')
+		text = ''
+		#l'ecrire dans une chaine de caractere
+		for line in text_file:
 			text += line
+			#fermeture fichier
+		text_file.close()
+		#ic = IC(text)
+		#calcul longueur cle
+		longueur_cle_vigenere(args[1])
+		#demander choix de cle user et faire tant qu'il veut
+		choix = 1
+		while choix == 1:#on recommence
+			l_cle = 0
+			print ("\nlongueur de cle de dechiffrement: ")
+			l_cle = int(raw_input())
 
-        ic = IC(text)
-    	text_file.close()
+			print("Le message clair:\n" + str(decalage_vigenere(text, l_cle)))
+			#quitter ou essayer une autre longueur
+			print ("\nrecommencer (1), quitter (0): ")
+			choix = int(raw_input())
 
-    	#calcul et renvoie ic
-    	#print freq
-    	return ic
+		#sortir
 
-#print main(sys.argv)
-longueur_cle_vigenere(sys.argv[1])
+
+main(sys.argv)
+# decalage_vigenere("aeeeaeeeaeeeaeeeaeeeaeeeaeeea", 4)
