@@ -47,7 +47,7 @@ def pgcd(a, b):
     return a
 #autrement calculer IC des sous-chaines de longueur k allant de 3 a 24
 #reperer les IC qui sortent de l'ordinaire et calculer le pgcd de leur longueurs
-def longueur_cle_vigenere(fichier):
+def kasiski(fichier):
     f = open(fichier, 'r')
     text  = ''
     list_ic = []#repertorie les ic selon la longuer de k de la sous-chaine
@@ -104,7 +104,7 @@ def dechiff_cesar(lettre,cle):
 #textes[i] contient les lettres aux indices i + kn tant que kn < len(texte)
 #comtabiliser la frequence des lettres dans chacun des n textes: la plus frequente est souvent E
 #effectuer un decalage
-def decalage_vigenere(texte, n):
+def dechiff_vigenere(texte, n):
 	liste_textes = []#contient n textes
 	for i in range(n):
 		liste_textes.append([])
@@ -185,7 +185,7 @@ def main(args):
 		text_file.close()
 		#ic = IC(text)
 		#calcul longueur cle
-		longueur_cle_vigenere(args[1])
+		kasiski(args[1])
 		#demander choix de cle user et faire tant qu'il veut
 		choix = 1
 		while choix == 1:#on recommence
@@ -193,7 +193,7 @@ def main(args):
 			print ("\nlongueur de cle de dechiffrement: ")
 			l_cle = int(raw_input())
 
-			print("Le message clair:\n" + str(decalage_vigenere(text, l_cle)))
+			print("Le message clair:\n" + str(dechiff_vigenere(text, l_cle)))
 			#quitter ou essayer une autre longueur
 			print ("\nrecommencer (1), quitter (0): ")
 			choix = int(raw_input())
