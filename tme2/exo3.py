@@ -35,12 +35,23 @@ def BSGS(n, p, g):
 		
 	#print GS
 	#print BS
-	for i in range(len(BS)):
-		for j in range(len(GS)):
-			if BS[i] == GS[j]:
+	#for i in range(len(BS)):
+	#	for j in range(len(GS)):
+	#		if BS[i] == GS[j]:
 				#print i
-				break;
-	#print (i, j)
+	#			break;
+	#pour reduire la complexite on trie les deux listes
+	BS = sorted(BS)
+	GS = sorted(GS)
+	#on les concatene
+	l = BS+GS
+	#on trie la concatenation
+	l = sorted(l)
+	#on regarde s'il ya deux case successives avec la meme valeur
+	for i in range(0, len(l)-1):
+		if l[i] == l[i+1]:
+			fini
+	
 	k = j*s + i
 	return k
 
